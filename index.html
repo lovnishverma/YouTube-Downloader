@@ -439,10 +439,25 @@
             const commands = analysisResults
                 .filter(result => result.isValid)
                 .map(result => result.ytDlpCommand)
-                .join('\n');
+                .join('\n\n');
 
             copyToClipboard(commands);
-            alert(`Copied ${analysisResults.filter(r => r.isValid).length} yt-dlp commands to clipboard!`);
+            
+            const validCount = analysisResults.filter(r => r.isValid).length;
+            setTimeout(() => {
+                alert(`✅ Copied ${validCount} yt-dlp command${validCount > 1 ? 's' : ''} to clipboard!`);
+            }, 100);
+        }
+
+        function copyCommandFromElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                const text = element.textContent;
+                copyToClipboard(text);
+            } else {
+                console.error('Element not found:', elementId);
+                alert('Error: Could not find command to copy');
+            }
         }
 
         function copyToClipboard(text) {
