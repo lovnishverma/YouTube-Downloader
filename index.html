@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube URL Analyzer Pro - Enhanced Edition</title>
+    <title>YouTube URL Analyzer - GitHub Pages Compatible</title>
     <style>
         * {
             margin: 0;
@@ -11,117 +11,39 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --error-color: #ef4444;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-        }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--primary-gradient);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
             min-height: 100vh;
             padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
-            z-index: -1;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(1deg); }
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 40px;
-            box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: slideIn 0.8s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             text-align: center;
-            color: white;
-            margin-bottom: 10px;
-            font-size: 3em;
-            font-weight: 800;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            letter-spacing: -0.02em;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .subtitle {
             text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 40px;
-            font-size: 1.2em;
-            font-weight: 300;
-        }
-
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            color: #666;
             margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: 700;
-            color: white;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 1.1em;
         }
 
         .input-section {
@@ -129,552 +51,218 @@
         }
 
         .input-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: white;
-            font-size: 1.1em;
+            color: #333;
         }
 
-        input[type="url"], input[type="text"], textarea, select {
+        input[type="url"], textarea {
             width: 100%;
-            padding: 16px 20px;
-            border: 2px solid var(--glass-border);
-            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s ease;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            color: white;
+            background: #f8f9fa;
         }
 
-        input::placeholder, textarea::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        input:focus, textarea:focus, select:focus {
+        input[type="url"]:focus, textarea:focus {
             outline: none;
-            border-color: #f093fb;
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 0 4px rgba(240, 147, 251, 0.2);
-            transform: translateY(-2px);
-        }
-
-        select {
-            cursor: pointer;
+            border-color: #ff6b6b;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
         }
 
         textarea {
-            min-height: 140px;
-            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            min-height: 120px;
+            font-family: 'Courier New', monospace;
             resize: vertical;
         }
 
         .btn {
-            background: var(--secondary-gradient);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
             color: white;
             border: none;
-            padding: 16px 32px;
-            border-radius: 12px;
+            padding: 15px 30px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
             transition: all 0.3s ease;
-            margin-right: 15px;
-            margin-bottom: 15px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
+            margin-right: 10px;
+            margin-bottom: 10px;
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(240, 147, 251, 0.4);
-        }
-
-        .btn:active {
-            transform: translateY(-1px);
-        }
-
-        .btn-primary {
-            background: var(--primary-gradient);
-        }
-
-        .btn-success {
-            background: linear-gradient(45deg, var(--success-color), #059669);
-        }
-
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 14px;
-            margin: 5px;
-        }
-
-        .clear-btn {
-            background: linear-gradient(45deg, #6b7280, #4b5563);
-        }
-
-        .export-btn {
-            background: linear-gradient(45deg, #8b5cf6, #7c3aed);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
         }
 
         .results {
             margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
             display: none;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .video-info {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            padding: 25px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .video-info::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--secondary-gradient);
-            border-radius: 2px;
-        }
-
-        .video-info:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .video-header {
-            display: flex;
-            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
             margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .video-type-badge {
-            background: var(--secondary-gradient);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-right: 15px;
-            margin-bottom: 10px;
-        }
-
-        .video-title {
-            color: white;
-            font-size: 1.3em;
-            font-weight: 600;
-            flex: 1;
-        }
-
-        .video-details {
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.6;
+            border-left: 4px solid #4ecdc4;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .video-id {
-            font-family: 'SF Mono', monospace;
-            background: rgba(0, 0, 0, 0.3);
-            color: #fbbf24;
-            padding: 8px 12px;
-            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            background: #f1f3f4;
+            padding: 5px 10px;
+            border-radius: 5px;
             display: inline-block;
-            margin: 8px 0;
-            font-weight: 500;
-        }
-
-        .command-section {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 12px;
-            margin: 15px 0;
-            position: relative;
-        }
-
-        .command-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .command-label {
-            color: #fbbf24;
-            font-weight: 600;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .command-code {
-            font-family: 'SF Mono', monospace;
-            color: #a3e635;
-            word-break: break-all;
-            line-height: 1.5;
-            margin: 10px 0;
-            font-size: 0.95em;
-        }
-
-        .copy-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8em;
-            transition: all 0.3s ease;
-        }
-
-        .copy-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        .thumbnail-container {
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        .thumbnail {
-            max-width: 300px;
-            width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
-
-        .thumbnail:hover {
-            transform: scale(1.05);
+            margin: 5px 0;
         }
 
         .external-links {
-            margin-top: 25px;
-            padding: 25px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
+            margin-top: 20px;
+            padding: 20px;
+            background: #e7f3ff;
+            border-radius: 10px;
+            border-left: 4px solid #007bff;
         }
 
         .external-links h3 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 1.3em;
-        }
-
-        .link-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            color: #007bff;
+            margin-bottom: 15px;
         }
 
         .external-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--glass-bg);
+            display: inline-block;
+            background: #007bff;
             color: white;
             text-decoration: none;
-            padding: 15px 20px;
-            border-radius: 12px;
-            border: 1px solid var(--glass-border);
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 5px 5px 5px 0;
             transition: all 0.3s ease;
-            font-weight: 500;
         }
 
         .external-links a:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background: #0056b3;
+            transform: translateY(-1px);
         }
 
         .limitation-notice {
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2));
-            border: 1px solid rgba(251, 191, 36, 0.3);
-            border-radius: 16px;
-            padding: 25px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
             margin-bottom: 30px;
-            color: white;
-            backdrop-filter: blur(10px);
+            color: #856404;
         }
 
-        .url-validator {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.9em;
+        .copy-btn {
+            background: #28a745;
+            font-size: 14px;
+            padding: 8px 12px;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+            box-shadow: 0 5px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .quality-selector {
+            margin-bottom: 20px;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #f8f9fa;
             transition: all 0.3s ease;
         }
 
-        .validator-valid {
-            background: rgba(16, 185, 129, 0.2);
-            color: #6ee7b7;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-
-        .validator-invalid {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .validator-empty {
-            background: rgba(107, 114, 128, 0.2);
-            color: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(107, 114, 128, 0.3);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--secondary-gradient);
-            border-radius: 3px;
-            transition: width 0.3s ease;
-            width: 0%;
+        select:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
         }
 
         .copied-notification {
             position: fixed;
-            top: 30px;
-            right: 30px;
-            background: var(--success-color);
+            top: 20px;
+            right: 20px;
+            background: #28a745;
             color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             opacity: 0;
-            transform: translateX(100px) scale(0.8);
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            font-weight: 600;
+            transform: translateX(100px);
+            transition: all 0.3s ease;
         }
 
         .copied-notification.show {
             opacity: 1;
-            transform: translateX(0) scale(1);
-        }
-
-        .advanced-options {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
-            backdrop-filter: blur(10px);
-        }
-
-        .advanced-options h3 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 1.2em;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 10px;
-        }
-
-        .checkbox-group:hover {
-            color: #f093fb;
-        }
-
-        input[type="checkbox"] {
-            margin-right: 10px;
-            transform: scale(1.2);
-            accent-color: #f093fb;
-        }
-
-        .url-count {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        .error-message {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .action-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 10px;
-            }
-            
-            h1 {
-                font-size: 2.5em;
-            }
-            
-            .stats-bar {
-                grid-template-columns: 1fr;
-            }
-            
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
+            transform: translateX(0);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎥 YouTube Analyzer Pro</h1>
-        <p class="subtitle">Advanced YouTube URL analysis with enhanced download options</p>
+        <h1>🎥 YouTube URL Analyzer</h1>
+        <p class="subtitle">Extract video IDs, generate download commands, and get external downloader links</p>
         
-        <div class="stats-bar">
-            <div class="stat-card">
-                <span class="stat-number" id="total-analyzed">0</span>
-                <span class="stat-label">Total Analyzed</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number" id="valid-videos">0</span>
-                <span class="stat-label">Valid Videos</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number" id="playlists-found">0</span>
-                <span class="stat-label">Playlists Found</span>
-            </div>
-        </div>
-
         <div class="limitation-notice">
-            <strong>⚠️ No ffmpeg? No problem!</strong> This tool now defaults to formats that work without ffmpeg. Select "720p MP4" or "360p MP4" for single files with audio included.
-        </div>
-
-        <div class="advanced-options">
-            <h3>⚙️ Advanced Options</h3>
-            <div class="options-grid">
-                <div class="input-group">
-                    <label for="video-quality">Video Quality:</label>
-                    <select id="video-quality">
-                        <option value="22">🎯 720p MP4 (RECOMMENDED - no ffmpeg needed)</option>
-                        <option value="18">📱 360p MP4 (no ffmpeg needed)</option>
-                        <option value="133+140/22">📺 720p MP4 (fallback to format 22)</option>
-                        <option value="134+140/18">📱 360p MP4 (fallback to format 18)</option>
-                        <option value="mp4">📺 Best MP4 (no ffmpeg needed)</option>
-                        <option value="webm">🌐 Best WebM (no ffmpeg needed)</option>
-                        <option value="worst[ext=mp4]">⚡ Fastest MP4 (no ffmpeg needed)</option>
-                        <option value="bestaudio[ext=mp3]/bestaudio[ext=m4a]/bestaudio">🎵 Audio Only</option>
-                        <option value="best[height<=720][ext=mp4]/best[ext=mp4]/best">🔄 Smart HD (auto-fallback)</option>
-                        <option value="best">🏆 Best Available (may need ffmpeg)</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="output-path">Output Directory:</label>
-                    <input type="text" id="output-path" value="downloads" placeholder="downloads">
-                </div>
-            </div>
-            <div class="options-grid">
-                <label class="checkbox-group">
-                    <input type="checkbox" id="add-metadata"> Add metadata to files
-                </label>
-                <label class="checkbox-group">
-                    <input type="checkbox" id="add-subtitles"> Download subtitles
-                </label>
-                <label class="checkbox-group">
-                    <input type="checkbox" id="add-thumbnail"> Embed thumbnails
-                </label>
-                <label class="checkbox-group">
-                    <input type="checkbox" id="playlist-reverse"> Reverse playlist order
-                </label>
-            </div>
+            <strong>⚠️ GitHub Pages Limitation:</strong> This static site can only analyze URLs and provide download commands. Actual downloading requires server-side processing or external tools.
         </div>
 
         <div class="input-section">
-            <div class="input-group">
-                <label for="single-url">🎯 Single YouTube URL:</label>
-                <input type="url" id="single-url" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                <div id="single-validator" class="url-validator validator-empty">Enter a YouTube URL to validate</div>
-                <div class="action-buttons">
-                    <button class="btn btn-primary" onclick="analyzeSingle()">🔍 Analyze URL</button>
-                    <button class="btn btn-success btn-small" onclick="pasteSingle()">📋 Paste</button>
-                </div>
+            <div class="quality-selector">
+                <label for="video-quality">Video Quality:</label>
+                <select id="video-quality">
+                    <option value="best">Best Quality (Highest Available)</option>
+                    <option value="worst">Worst Quality (Lowest Available)</option>
+                    <option value="bestvideo[height<=2160]+bestaudio/best">4K (2160p)</option>
+                    <option value="bestvideo[height<=1440]+bestaudio/best">2K (1440p)</option>
+                    <option value="bestvideo[height<=1080]+bestaudio/best">Full HD (1080p)</option>
+                    <option value="bestvideo[height<=720]+bestaudio/best">HD (720p)</option>
+                    <option value="bestvideo[height<=480]+bestaudio/best">SD (480p)</option>
+                    <option value="bestvideo[height<=360]+bestaudio/best">Low (360p)</option>
+                    <option value="bestaudio/best">Audio Only (Best Quality)</option>
+                    <option value="bestaudio[ext=mp3]/best">Audio Only (MP3)</option>
+                </select>
             </div>
 
             <div class="input-group">
-                <label for="bulk-urls">📋 Multiple URLs (one per line):</label>
+                <label for="single-url">Single YouTube URL:</label>
+                <input type="url" id="single-url" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                <button class="btn" onclick="analyzeSingle()">🔍 Analyze URL</button>
+            </div>
+
+            <div class="input-group">
+                <label for="bulk-urls">Multiple URLs (one per line):</label>
                 <textarea id="bulk-urls" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ&#10;https://www.youtube.com/watch?v=9bZkp7q19f0&#10;https://www.youtube.com/playlist?list=..."></textarea>
-                <div class="url-count" id="url-count">0 URLs entered</div>
-                <div class="action-buttons">
-                    <button class="btn btn-primary" onclick="analyzeBulk()">🔍 Analyze All URLs</button>
-                    <button class="btn btn-success" onclick="copyAllCommands()">📋 Copy All Commands</button>
-                    <button class="btn export-btn" onclick="exportResults()">💾 Export Results</button>
-                    <button class="btn clear-btn" onclick="clearAll()">🗑️ Clear All</button>
-                    <button class="btn btn-success btn-small" onclick="pasteBulk()">📋 Paste</button>
-                </div>
+                <button class="btn" onclick="analyzeBulk()">🔍 Analyze All URLs</button>
+                <button class="btn copy-btn" onclick="copyCommands()">📋 Copy yt-dlp Commands</button>
             </div>
         </div>
 
         <div id="results" class="results">
-            <div id="progress-section" style="display: none;">
-                <h3 style="color: white; margin-bottom: 10px;">📊 Processing URLs...</h3>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
-                </div>
-                <p style="color: rgba(255,255,255,0.8); text-align: center;" id="progress-text">0% complete</p>
-            </div>
-            <h3 style="color: white; margin-bottom: 20px;">📊 Analysis Results:</h3>
+            <h3>📊 Analysis Results:</h3>
             <div id="results-content"></div>
         </div>
 
@@ -686,65 +274,11 @@
 
     <script>
         let analysisResults = [];
-        let urlValidationTimeout;
-        let stats = {
-            totalAnalyzed: 0,
-            validVideos: 0,
-            playlistsFound: 0
-        };
-
-        // Initialize event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Real-time URL validation
-            document.getElementById('single-url').addEventListener('input', function(e) {
-                clearTimeout(urlValidationTimeout);
-                urlValidationTimeout = setTimeout(() => validateSingleUrl(e.target.value), 300);
-            });
-
-            document.getElementById('bulk-urls').addEventListener('input', function(e) {
-                updateUrlCount(e.target.value);
-            });
-        });
-
-        function validateSingleUrl(url) {
-            const validator = document.getElementById('single-validator');
-            
-            if (!url.trim()) {
-                validator.className = 'url-validator validator-empty';
-                validator.textContent = 'Enter a YouTube URL to validate';
-                return;
-            }
-
-            const analysis = analyzeUrl(url);
-            if (analysis.isValid) {
-                validator.className = 'url-validator validator-valid';
-                validator.textContent = `✅ Valid ${analysis.type} URL detected`;
-            } else {
-                validator.className = 'url-validator validator-invalid';
-                validator.textContent = '❌ Invalid YouTube URL format';
-            }
-        }
-
-        function updateUrlCount(text) {
-            const urls = text.split('\n').filter(url => url.trim().length > 0);
-            const counter = document.getElementById('url-count');
-            const validUrls = urls.filter(url => analyzeUrl(url).isValid).length;
-            counter.textContent = `${urls.length} URLs entered (${validUrls} valid)`;
-        }
 
         function extractVideoId(url) {
-            const patterns = [
-                /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
-                /youtube\.com\/watch\?v=([^&\n?#]+)/,
-                /youtube\.com\/embed\/([^&\n?#]+)/,
-                /youtu\.be\/([^&\n?#]+)/
-            ];
-            
-            for (const pattern of patterns) {
-                const match = url.match(pattern);
-                if (match) return match[1];
-            }
-            return null;
+            const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
         }
 
         function extractPlaylistId(url) {
@@ -753,402 +287,277 @@
             return match ? match[1] : null;
         }
 
-        function generateYtDlpCommand(url, options = {}) {
+        function generateYtDlpCommand(url, outputPath = 'downloads') {
             const quality = document.getElementById('video-quality').value;
-            const outputPath = document.getElementById('output-path').value || 'downloads';
-            const addMetadata = document.getElementById('add-metadata').checked;
-            const addSubtitles = document.getElementById('add-subtitles').checked;
-            const addThumbnail = document.getElementById('add-thumbnail').checked;
-            const reversePlaylist = document.getElementById('playlist-reverse').checked;
-
-            let command = 'yt-dlp';
-            
-            // Quality format
-            if (quality !== "best") {
-                command += ` -f "${quality}"`;
-            }
-            
-            // Output template
-            command += ` -o "${outputPath}/%(uploader)s - %(title).80s [%(id)s].%(ext)s"`;
-            
-            // Additional options
-            if (addMetadata) command += ' --add-metadata';
-            if (addSubtitles) command += ' --write-subs --write-auto-subs';
-            if (addThumbnail) command += ' --embed-thumbnail';
-            if (reversePlaylist && extractPlaylistId(url)) command += ' --playlist-reverse';
-            
-            command += ` "${url}"`;
-            
-            return command;
+            return `yt-dlp -f "${quality}" -o "${outputPath}/%(title).80s.%(ext)s" "${url}"`;
         }
 
         function analyzeUrl(url) {
             const videoId = extractVideoId(url);
             const playlistId = extractPlaylistId(url);
             
-            const analysis = {
+            return {
                 url: url,
                 videoId: videoId,
                 playlistId: playlistId,
-                isValid: !!(videoId || playlistId),
+                isValid: videoId || playlistId,
                 type: playlistId ? 'playlist' : 'video',
                 thumbnail: videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null,
                 watchUrl: videoId ? `https://www.youtube.com/watch?v=${videoId}` : url,
                 embedUrl: videoId ? `https://www.youtube.com/embed/${videoId}` : null,
-                ytDlpCommand: null,
-                timestamp: new Date().toLocaleString()
+                ytDlpCommand: generateYtDlpCommand(url)
             };
-
-            if (analysis.isValid) {
-                analysis.ytDlpCommand = generateYtDlpCommand(url);
-            }
-
-            return analysis;
         }
 
-        function displayResult(analysis, index) {
+        function displayResult(analysis) {
             const resultsContent = document.getElementById('results-content');
             
             const videoDiv = document.createElement('div');
             videoDiv.className = 'video-info';
-            videoDiv.style.animationDelay = `${index * 0.1}s`;
             
-            if (!analysis.isValid) {
-                videoDiv.innerHTML = `
-                    <div class="video-header">
-                        <span class="video-type-badge" style="background: var(--error-color);">❌ Invalid</span>
-                        <span class="video-title">Invalid YouTube URL</span>
-                    </div>
-                    <div class="error-message">
-                        This URL doesn't appear to be a valid YouTube video or playlist link.
-                        <br><strong>URL:</strong> ${analysis.url}
-                    </div>
+            let content = `
+                <h4>${analysis.type === 'playlist' ? '📋 Playlist' : '🎬 Video'}</h4>
+                <p><strong>URL:</strong> <a href="${analysis.url}" target="_blank">${analysis.url}</a></p>
+            `;
+
+            if (analysis.videoId) {
+                content += `
+                    <p><strong>Video ID:</strong> <span class="video-id">${analysis.videoId}</span></p>
+                    <p><strong>Thumbnail:</strong> <img src="${analysis.thumbnail}" alt="Thumbnail" style="max-width: 200px; border-radius: 5px; margin: 10px 0;"></p>
                 `;
-                resultsContent.appendChild(videoDiv);
-                return;
             }
 
-            let content = `
-                <div class="video-header">
-                    <span class="video-type-badge">${analysis.type === 'playlist' ? '📋 Playlist' : '🎬 Video'}</span>
-                    <span class="video-title">${analysis.type === 'playlist' ? 'YouTube Playlist' : 'YouTube Video'}</span>
-                </div>
-                <div class="video-details">
-                    ${analysis.videoId ? `<div class="video-id">Video ID: ${analysis.videoId}</div>` : ''}
-                    ${analysis.playlistId ? `<div class="video-id">Playlist ID: ${analysis.playlistId}</div>` : ''}
-                    <p><strong>Original URL:</strong> ${analysis.url}</p>
-                    <p><strong>Analysis Time:</strong> ${analysis.timestamp}</p>
-                </div>
+            if (analysis.playlistId) {
+                content += `<p><strong>Playlist ID:</strong> <span class="video-id">${analysis.playlistId}</span></p>`;
+            }
 
-                ${analysis.thumbnail ? `
-                    <div class="thumbnail-container">
-                        <img src="${analysis.thumbnail}" alt="Video Thumbnail" class="thumbnail" 
-                             onerror="this.style.display='none'">
-                    </div>
-                ` : ''}
-
-                <div class="command-section">
-                    <div class="command-header">
-                        <span class="command-label">🚀 yt-dlp Command</span>
-                        <button class="copy-btn" onclick="copyToClipboard('${analysis.ytDlpCommand.replace(/'/g, "\\'")}')">📋 Copy</button>
-                    </div>
-                    <div class="command-code">${analysis.ytDlpCommand}</div>
+            content += `
+                <p><strong>yt-dlp Command:</strong></p>
+                <div style="background: #f1f3f4; padding: 10px; border-radius: 5px; margin: 10px 0; font-family: monospace; word-break: break-all;">
+                    <code>${analysis.ytDlpCommand}</code>
+                    <button class="btn copy-btn" style="margin-left: 10px; font-size: 12px; padding: 5px 10px;" onclick="copyToClipboard('${analysis.ytDlpCommand.replace(/'/g, "\\'")}')">📋 Copy</button>
                 </div>
-
+                
                 <div class="external-links">
-                    <h3>🔗 Quick Actions</h3>
-                    <div class="link-grid">
-                        <a href="${analysis.watchUrl}" target="_blank">🎬 Watch on YouTube</a>
-                        ${analysis.embedUrl ? `<a href="${analysis.embedUrl}" target="_blank">📺 Embed View</a>` : ''}
-                        <a href="#" onclick="copyToClipboard('${analysis.url}'); return false;">📋 Copy URL</a>
-                        <a href="#" onclick="copyToClipboard('${analysis.ytDlpCommand.replace(/'/g, "\\'")}'); return false;">⚡ Copy Command</a>
-                    </div>
+                    <h3>🔗 External Download Options:</h3>
+                    <a href="https://ytdl-org.github.io/youtube-dl/" target="_blank">youtube-dl Official</a>
+                    <a href="https://github.com/yt-dlp/yt-dlp" target="_blank">yt-dlp (Recommended)</a>
+                    <a href="https://www.4kdownload.com/" target="_blank">4K Video Downloader</a>
+                    <a href="https://clipgrab.org/" target="_blank">ClipGrab</a>
                 </div>
             `;
+
+            if (!analysis.isValid) {
+                content = `
+                    <h4 style="color: #dc3545;">❌ Invalid URL</h4>
+                    <p>This doesn't appear to be a valid YouTube URL.</p>
+                `;
+            }
 
             videoDiv.innerHTML = content;
             resultsContent.appendChild(videoDiv);
         }
 
-        function updateStats() {
-            document.getElementById('total-analyzed').textContent = stats.totalAnalyzed;
-            document.getElementById('valid-videos').textContent = stats.validVideos;
-            document.getElementById('playlists-found').textContent = stats.playlistsFound;
-        }
-
-        function showProgress(current, total) {
-            const progressSection = document.getElementById('progress-section');
-            const progressFill = document.getElementById('progress-fill');
-            const progressText = document.getElementById('progress-text');
-            
-            progressSection.style.display = 'block';
-            const percentage = (current / total) * 100;
-            progressFill.style.width = percentage + '%';
-            progressText.textContent = `${Math.round(percentage)}% complete (${current}/${total})`;
-        }
-
-        function hideProgress() {
-            const progressSection = document.getElementById('progress-section');
-            progressSection.style.display = 'none';
-        }
-
         function analyzeSingle() {
             const url = document.getElementById('single-url').value.trim();
             if (!url) {
-                alert('Please enter a YouTube URL to analyze.');
+                alert('Please enter a YouTube URL');
                 return;
             }
 
-            const analysis = analyzeUrl(url);
-            analysisResults = [analysis];
-            
-            // Update stats
-            stats.totalAnalyzed = 1;
-            stats.validVideos = analysis.isValid ? 1 : 0;
-            stats.playlistsFound = analysis.type === 'playlist' ? 1 : 0;
-            updateStats();
-
-            // Clear previous results and display new one
+            const results = document.getElementById('results');
             const resultsContent = document.getElementById('results-content');
-            resultsContent.innerHTML = '';
-            displayResult(analysis, 0);
             
-            // Show results
-            document.getElementById('results').style.display = 'block';
-        }
-
-        async function analyzeBulk() {
-            const bulkText = document.getElementById('bulk-urls').value.trim();
-            if (!bulkText) {
-                alert('Please enter URLs to analyze.');
-                return;
-            }
-
-            const urls = bulkText.split('\n').filter(url => url.trim().length > 0);
-            if (urls.length === 0) {
-                alert('No valid URLs found in the input.');
-                return;
-            }
-
-            // Reset stats
-            stats.totalAnalyzed = 0;
-            stats.validVideos = 0;
-            stats.playlistsFound = 0;
+            resultsContent.innerHTML = '';
             analysisResults = [];
 
-            // Clear previous results
+            const analysis = analyzeUrl(url);
+            analysisResults.push(analysis);
+            displayResult(analysis);
+            
+            results.style.display = 'block';
+        }
+
+        function analyzeBulk() {
+            const urlsText = document.getElementById('bulk-urls').value.trim();
+            if (!urlsText) {
+                alert('Please enter some URLs');
+                return;
+            }
+
+            const urls = urlsText.split('\n')
+                .map(url => url.trim())
+                .filter(url => url.length > 0);
+
+            if (urls.length === 0) {
+                alert('No valid URLs found');
+                return;
+            }
+
+            const results = document.getElementById('results');
             const resultsContent = document.getElementById('results-content');
+            
             resultsContent.innerHTML = '';
-            document.getElementById('results').style.display = 'block';
+            analysisResults = [];
 
-            // Process URLs with progress indication
-            for (let i = 0; i < urls.length; i++) {
-                showProgress(i, urls.length);
-                
-                const analysis = analyzeUrl(urls[i]);
-                analysisResults.push(analysis);
-                
-                // Update stats
-                stats.totalAnalyzed++;
-                if (analysis.isValid) {
-                    stats.validVideos++;
-                    if (analysis.type === 'playlist') {
-                        stats.playlistsFound++;
+            // Add summary
+            const summaryDiv = document.createElement('div');
+            summaryDiv.innerHTML = `
+                <div style="background: #d1ecf1; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #17a2b8;">
+                    <h4 style="color: #0c5460;">📊 Analysis Summary</h4>
+                    <p><strong>Total URLs:</strong> ${urls.length}</p>
+                    <p><strong>Processing status:</strong> <span id="processing-status">Analyzing...</span></p>
+                </div>
+            `;
+            resultsContent.appendChild(summaryDiv);
+
+            urls.forEach((url, index) => {
+                setTimeout(() => {
+                    const analysis = analyzeUrl(url);
+                    analysisResults.push(analysis);
+                    displayResult(analysis);
+                    
+                    // Update status
+                    const statusSpan = document.getElementById('processing-status');
+                    statusSpan.textContent = `Processed ${index + 1}/${urls.length}`;
+                    
+                    if (index === urls.length - 1) {
+                        statusSpan.textContent = '✅ Complete!';
                     }
-                }
-                
-                updateStats();
-                displayResult(analysis, i);
-                
-                // Small delay for visual effect
-                await new Promise(resolve => setTimeout(resolve, 50));
-            }
-            
-            showProgress(urls.length, urls.length);
-            setTimeout(() => hideProgress(), 1000);
+                }, index * 200); // Stagger the analysis for visual effect
+            });
+
+            results.style.display = 'block';
         }
 
-        async function pasteSingle() {
-            try {
-                const text = await navigator.clipboard.readText();
-                document.getElementById('single-url').value = text;
-                validateSingleUrl(text);
-            } catch (err) {
-                alert('Unable to access clipboard. Please paste manually.');
-            }
-        }
-
-        async function pasteBulk() {
-            try {
-                const text = await navigator.clipboard.readText();
-                document.getElementById('bulk-urls').value = text;
-                updateUrlCount(text);
-            } catch (err) {
-                alert('Unable to access clipboard. Please paste manually.');
-            }
-        }
-
-        function copyAllCommands() {
-            const validResults = analysisResults.filter(result => result.isValid);
-            if (validResults.length === 0) {
-                alert('No valid URLs to copy commands for.');
-                return;
-            }
-
-            const commands = validResults.map(result => result.ytDlpCommand).join('\n\n');
-            copyToClipboard(commands);
-        }
-
-        function exportResults() {
+        function copyCommands() {
             if (analysisResults.length === 0) {
-                alert('No results to export. Please analyze some URLs first.');
+                alert('No analysis results to copy. Please analyze some URLs first.');
                 return;
             }
 
-            const exportData = {
-                timestamp: new Date().toISOString(),
-                stats: stats,
-                results: analysisResults.map(result => ({
-                    url: result.url,
-                    videoId: result.videoId,
-                    playlistId: result.playlistId,
-                    type: result.type,
-                    isValid: result.isValid,
-                    ytDlpCommand: result.ytDlpCommand,
-                    watchUrl: result.watchUrl,
-                    embedUrl: result.embedUrl
-                }))
-            };
+            const commands = analysisResults
+                .filter(result => result.isValid)
+                .map(result => result.ytDlpCommand)
+                .join('\n\n');
 
-            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `youtube_analysis_${new Date().getTime()}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            showNotification('Results exported successfully!');
+            copyToClipboard(commands);
+            
+            const validCount = analysisResults.filter(r => r.isValid).length;
+            setTimeout(() => {
+                alert(`✅ Copied ${validCount} yt-dlp command${validCount > 1 ? 's' : ''} to clipboard!`);
+            }, 100);
         }
 
-        function clearAll() {
-            if (confirm('Are you sure you want to clear all results and inputs?')) {
-                document.getElementById('single-url').value = '';
-                document.getElementById('bulk-urls').value = '';
-                document.getElementById('results-content').innerHTML = '';
-                document.getElementById('results').style.display = 'none';
-                document.getElementById('single-validator').className = 'url-validator validator-empty';
-                document.getElementById('single-validator').textContent = 'Enter a YouTube URL to validate';
-                document.getElementById('url-count').textContent = '0 URLs entered';
-                
-                // Reset stats
-                stats.totalAnalyzed = 0;
-                stats.validVideos = 0;
-                stats.playlistsFound = 0;
-                analysisResults = [];
-                updateStats();
-                
-                showNotification('All data cleared!');
+        function copyCommandFromElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                const text = element.textContent;
+                copyToClipboard(text);
+            } else {
+                console.error('Element not found:', elementId);
+                alert('Error: Could not find command to copy');
             }
         }
 
-        function generateYtDlpCommand(url, options = {}) {
-            const quality = document.getElementById('video-quality').value;
-            const outputPath = document.getElementById('output-path').value || 'downloads';
-            const addMetadata = document.getElementById('add-metadata').checked;
-            const addSubtitles = document.getElementById('add-subtitles').checked;
-            const addThumbnail = document.getElementById('add-thumbnail').checked;
-            const reversePlaylist = document.getElementById('playlist-reverse').checked;
-
-            let command = 'yt-dlp';
+        function copyToClipboard(text) {
+            console.log('Attempting to copy:', text);
             
-            // Quality format
-            if (quality !== "best") {
-                command += ` -f "${quality}"`;
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    console.log('Clipboard API success');
+                    showCopyNotification();
+                }).catch(err => {
+                    console.error('Clipboard API failed:', err);
+                    fallbackCopyToClipboard(text);
+                });
+            } else {
+                console.log('Using fallback copy method');
+                fallbackCopyToClipboard(text);
             }
-            
-            // Output template
-            command += ` -o "${outputPath}/%(uploader)s - %(title).80s [%(id)s].%(ext)s"`;
-            
-            // Additional options
-            if (addMetadata) command += ' --add-metadata';
-            if (addSubtitles) command += ' --write-subs --write-auto-subs';
-            if (addThumbnail) command += ' --embed-thumbnail';
-            if (reversePlaylist && extractPlaylistId(url)) command += ' --playlist-reverse';
-            
-            command += ` "${url}"`;
-            
-            return command;
         }
 
-        function analyzeUrl(url) {
-            const videoId = extractVideoId(url);
-            const playlistId = extractPlaylistId(url);
+        function fallbackCopyToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            textArea.style.top = '-9999px';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
             
-            const analysis = {
-                url: url,
-                videoId: videoId,
-                playlistId: playlistId,
-                isValid: !!(videoId || playlistId),
-                type: playlistId ? 'playlist' : 'video',
-                thumbnail: videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null,
-                watchUrl: videoId ? `https://www.youtube.com/watch?v=${videoId}` : url,
-                embedUrl: videoId ? `https://www.youtube.com/embed/${videoId}` : null,
-                ytDlpCommand: null,
-                timestamp: new Date().toLocaleString()
-            };
-
-            if (analysis.isValid) {
-                analysis.ytDlpCommand = generateYtDlpCommand(url);
-            }
-
-            return analysis;
-        }
-
-        async function copyToClipboard(text) {
             try {
-                await navigator.clipboard.writeText(text);
-                showNotification('Copied to clipboard!');
-            } catch (err) {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                textArea.style.position = 'fixed';
-                textArea.style.left = '-999999px';
-                textArea.style.top = '-999999px';
-                document.body.appendChild(textArea);
                 textArea.focus();
                 textArea.select();
+                textArea.setSelectionRange(0, 99999); // For mobile devices
                 
-                try {
-                    document.execCommand('copy');
-                    showNotification('Copied to clipboard!');
-                } catch (err) {
-                    alert('Unable to copy to clipboard. Please copy manually.');
+                const successful = document.execCommand('copy');
+                console.log('execCommand copy result:', successful);
+                
+                if (successful) {
+                    showCopyNotification();
+                } else {
+                    // Final fallback - show the text in a prompt
+                    setTimeout(() => {
+                        prompt('Please copy this command manually (Ctrl+C, then Cancel):', text);
+                    }, 100);
                 }
-                
+            } catch (err) {
+                console.error('Fallback copy failed:', err);
+                setTimeout(() => {
+                    prompt('Please copy this command manually (Ctrl+C, then Cancel):', text);
+                }, 100);
+            } finally {
                 document.body.removeChild(textArea);
             }
         }
 
-        function showNotification(message) {
+        function showCopyNotification() {
             const notification = document.getElementById('copy-notification');
-            notification.textContent = message;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+            if (notification) {
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
         }
 
-        // Utility function to escape HTML
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+        // Remove the unused function
+        // function copyCommandFromElement(elementId) was removed as it's now defined above
+
+        // Demo functionality
+        function loadDemo() {
+            document.getElementById('bulk-urls').value = `https://www.youtube.com/watch?v=dQw4w9WgXcQ
+https://www.youtube.com/watch?v=9bZkp7q19f0
+https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMt3JQTaaWDvykpOBz
+https://youtu.be/oHg5SJYRHA0`;
+            analyzeBulk();
         }
+
+        // Add demo button
+        window.addEventListener('DOMContentLoaded', () => {
+            const inputSection = document.querySelector('.input-section');
+            const demoBtn = document.createElement('button');
+            demoBtn.className = 'btn';
+            demoBtn.innerHTML = '🎬 Load Demo URLs';
+            demoBtn.onclick = loadDemo;
+            demoBtn.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+            inputSection.appendChild(demoBtn);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                const activeElement = document.activeElement;
+                if (activeElement.id === 'single-url') {
+                    analyzeSingle();
+                } else if (activeElement.id === 'bulk-urls') {
+                    analyzeBulk();
+                }
+            }
+        });
     </script>
 </body>
 </html>
