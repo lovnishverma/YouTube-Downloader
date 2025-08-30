@@ -461,14 +461,18 @@
         }
 
         function copyToClipboard(text) {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
+            console.log('Attempting to copy:', text);
+            
+            if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(text).then(() => {
+                    console.log('Clipboard API success');
                     showCopyNotification();
                 }).catch(err => {
-                    console.error('Clipboard API failed, trying fallback: ', err);
+                    console.error('Clipboard API failed:', err);
                     fallbackCopyToClipboard(text);
                 });
             } else {
+                console.log('Using fallback copy method');
                 fallbackCopyToClipboard(text);
             }
         }
@@ -477,23 +481,32 @@
             const textArea = document.createElement('textarea');
             textArea.value = text;
             textArea.style.position = 'fixed';
-            textArea.style.left = '-999999px';
-            textArea.style.top = '-999999px';
+            textArea.style.left = '-9999px';
+            textArea.style.top = '-9999px';
+            textArea.style.opacity = '0';
             document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
             
             try {
+                textArea.focus();
+                textArea.select();
+                textArea.setSelectionRange(0, 99999); // For mobile devices
+                
                 const successful = document.execCommand('copy');
+                console.log('execCommand copy result:', successful);
+                
                 if (successful) {
                     showCopyNotification();
                 } else {
-                    throw new Error('Copy command failed');
+                    // Final fallback - show the text in a prompt
+                    setTimeout(() => {
+                        prompt('Please copy this command manually (Ctrl+C, then Cancel):', text);
+                    }, 100);
                 }
             } catch (err) {
-                console.error('Fallback copy failed: ', err);
-                // Show manual copy dialog
-                prompt('Copy this command manually (Ctrl+C):', text);
+                console.error('Fallback copy failed:', err);
+                setTimeout(() => {
+                    prompt('Please copy this command manually (Ctrl+C, then Cancel):', text);
+                }, 100);
             } finally {
                 document.body.removeChild(textArea);
             }
@@ -501,12 +514,17 @@
 
         function showCopyNotification() {
             const notification = document.getElementById('copy-notification');
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 2000);
+            if (notification) {
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
         }
+
+        // Remove the unused function
+        // function copyCommandFromElement(elementId) was removed as it's now defined above
 
         // Demo functionality
         function loadDemo() {
