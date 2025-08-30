@@ -52,12 +52,10 @@ yt-dlp -f "bestvideo[height<=1080]+bestaudio/best" -o "downloads/%(title).80s.%(
 ## 📸 Screenshots
 
 🔹 **Homepage (Analyzer UI)**
-![Homepage Screenshot](https://github.com/user-attachments/assets/your-screenshot-id)
+![Homepage Screenshot](https://github.com/user-attachments/assets/76b1e12d-870f-4347-b118-62caa967eb4d)
 
 🔹 **Analysis Results Example**
-![Results Screenshot](https://github.com/user-attachments/assets/your-screenshot-id)
-
-*(Replace with real screenshots of your app UI)*
+![Results Screenshot](https://github.com/user-attachments/assets/bc62e4be-e38e-48bf-86c0-988ece250b0a)
 
 ---
 
@@ -67,7 +65,7 @@ yt-dlp -f "bestvideo[height<=1080]+bestaudio/best" -o "downloads/%(title).80s.%(
 YouTube-Downloader/
 │── index.html        # Main web app (HTML + CSS + JS)
 │── README.md         # Project documentation
-│── assets/           # (Optional) images/screenshots
+│── 404.html           # (Optional) Not Found error page
 ```
 
 ---
