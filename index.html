@@ -178,6 +178,47 @@
             background: #218838;
             box-shadow: 0 5px 10px rgba(40, 167, 69, 0.3);
         }
+
+        .quality-selector {
+            margin-bottom: 20px;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .copied-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.3s ease;
+        }
+
+        .copied-notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body>
@@ -190,6 +231,22 @@
         </div>
 
         <div class="input-section">
+            <div class="quality-selector">
+                <label for="video-quality">Video Quality:</label>
+                <select id="video-quality">
+                    <option value="best">Best Quality (Highest Available)</option>
+                    <option value="worst">Worst Quality (Lowest Available)</option>
+                    <option value="bestvideo[height<=2160]+bestaudio/best">4K (2160p)</option>
+                    <option value="bestvideo[height<=1440]+bestaudio/best">2K (1440p)</option>
+                    <option value="bestvideo[height<=1080]+bestaudio/best">Full HD (1080p)</option>
+                    <option value="bestvideo[height<=720]+bestaudio/best">HD (720p)</option>
+                    <option value="bestvideo[height<=480]+bestaudio/best">SD (480p)</option>
+                    <option value="bestvideo[height<=360]+bestaudio/best">Low (360p)</option>
+                    <option value="bestaudio/best">Audio Only (Best Quality)</option>
+                    <option value="bestaudio[ext=mp3]/best">Audio Only (MP3)</option>
+                </select>
+            </div>
+
             <div class="input-group">
                 <label for="single-url">Single YouTube URL:</label>
                 <input type="url" id="single-url" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
@@ -207,6 +264,11 @@
         <div id="results" class="results">
             <h3>📊 Analysis Results:</h3>
             <div id="results-content"></div>
+        </div>
+
+        <!-- Copy notification -->
+        <div id="copy-notification" class="copied-notification">
+            ✅ Copied to clipboard!
         </div>
     </div>
 
@@ -226,7 +288,8 @@
         }
 
         function generateYtDlpCommand(url, outputPath = 'downloads') {
-            return `yt-dlp -o "${outputPath}/%(title).80s.%(ext)s" "${url}"`;
+            const quality = document.getElementById('video-quality').value;
+            return `yt-dlp -f "${quality}" -o "${outputPath}/%(title).80s.%(ext)s" "${url}"`;
         }
 
         function analyzeUrl(url) {
@@ -383,18 +446,51 @@
         }
 
         function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                console.log('Copied to clipboard:', text);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopyNotification();
+                }).catch(err => {
+                    console.error('Clipboard API failed, trying fallback: ', err);
+                    fallbackCopyToClipboard(text);
+                });
+            } else {
+                fallbackCopyToClipboard(text);
+            }
+        }
+
+        function fallbackCopyToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopyNotification();
+                } else {
+                    throw new Error('Copy command failed');
+                }
+            } catch (err) {
+                console.error('Fallback copy failed: ', err);
+                // Show manual copy dialog
+                prompt('Copy this command manually (Ctrl+C):', text);
+            } finally {
                 document.body.removeChild(textArea);
-            });
+            }
+        }
+
+        function showCopyNotification() {
+            const notification = document.getElementById('copy-notification');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
         }
 
         // Demo functionality
