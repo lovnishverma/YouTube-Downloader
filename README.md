@@ -57,6 +57,10 @@ yt-dlp -f "bestvideo[height<=1080]+bestaudio/best" -o "downloads/%(title).80s.%(
 🔹 **Analysis Results Example**
 ![Results Screenshot](https://github.com/user-attachments/assets/bc62e4be-e38e-48bf-86c0-988ece250b0a)
 
+
+🔹 **Downloading Video Example**
+![Results Screenshot](https://github.com/user-attachments/assets/2aa2bdd3-848d-4bcc-aeaf-9d5802010dc5)
+
 ---
 
 ## 📂 Project Structure
@@ -107,7 +111,3 @@ This project is licensed under the **MIT License** – free to use, modify, and 
 ### ⭐ Support
 
 If you find this project useful, consider **starring ⭐ the repo** to support!
-
-
-Would you like me to also **design SEO-optimized Open Graph & Twitter Card meta tags** for this repo’s `index.html`, so when you share your GitHub Pages link on social media, it shows a nice **preview card with title, description, and thumbnail**?
-```
