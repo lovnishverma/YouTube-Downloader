@@ -140,7 +140,7 @@
             font-size: 1.1em;
         }
 
-        input[type="url"], textarea, select {
+        input[type="url"], input[type="text"], textarea, select {
             width: 100%;
             padding: 16px 20px;
             border: 2px solid var(--glass-border);
@@ -152,16 +152,20 @@
             color: white;
         }
 
-        input[type="url"]::placeholder, textarea::placeholder {
+        input::placeholder, textarea::placeholder {
             color: rgba(255, 255, 255, 0.6);
         }
 
-        input[type="url"]:focus, textarea:focus, select:focus {
+        input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: #f093fb;
             background: rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 0 4px rgba(240, 147, 251, 0.2);
             transform: translateY(-2px);
+        }
+
+        select {
+            cursor: pointer;
         }
 
         textarea {
@@ -224,6 +228,14 @@
             margin: 5px;
         }
 
+        .clear-btn {
+            background: linear-gradient(45deg, #6b7280, #4b5563);
+        }
+
+        .export-btn {
+            background: linear-gradient(45deg, #8b5cf6, #7c3aed);
+        }
+
         .results {
             margin-top: 30px;
             display: none;
@@ -267,6 +279,7 @@
             display: flex;
             align-items: center;
             margin-bottom: 15px;
+            flex-wrap: wrap;
         }
 
         .video-type-badge {
@@ -277,12 +290,14 @@
             font-size: 0.85em;
             font-weight: 600;
             margin-right: 15px;
+            margin-bottom: 10px;
         }
 
         .video-title {
             color: white;
             font-size: 1.3em;
             font-weight: 600;
+            flex: 1;
         }
 
         .video-details {
@@ -311,7 +326,7 @@
 
         .command-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
@@ -331,6 +346,22 @@
             line-height: 1.5;
             margin: 10px 0;
             font-size: 0.95em;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
 
         .thumbnail-container {
@@ -492,6 +523,7 @@
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-bottom: 10px;
         }
 
         .checkbox-group:hover {
@@ -502,31 +534,6 @@
             margin-right: 10px;
             transform: scale(1.2);
             accent-color: #f093fb;
-        }
-
-        .format-preview {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-family: monospace;
-            color: #a3e635;
-            font-size: 0.9em;
-        }
-
-        .action-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .clear-btn {
-            background: linear-gradient(45deg, #6b7280, #4b5563);
-        }
-
-        .export-btn {
-            background: linear-gradient(45deg, #8b5cf6, #7c3aed);
         }
 
         .url-count {
@@ -544,27 +551,11 @@
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
-        .download-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
             gap: 10px;
-            margin: 15px 0;
-        }
-
-        .download-btn {
-            padding: 10px 15px;
-            font-size: 0.9em;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .download-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
+            margin-top: 20px;
         }
 
         @media (max-width: 768px) {
@@ -695,15 +686,23 @@
     <script>
         let analysisResults = [];
         let urlValidationTimeout;
+        let stats = {
+            totalAnalyzed: 0,
+            validVideos: 0,
+            playlistsFound: 0
+        };
 
-        // Real-time URL validation
-        document.getElementById('single-url').addEventListener('input', function(e) {
-            clearTimeout(urlValidationTimeout);
-            urlValidationTimeout = setTimeout(() => validateSingleUrl(e.target.value), 300);
-        });
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Real-time URL validation
+            document.getElementById('single-url').addEventListener('input', function(e) {
+                clearTimeout(urlValidationTimeout);
+                urlValidationTimeout = setTimeout(() => validateSingleUrl(e.target.value), 300);
+            });
 
-        document.getElementById('bulk-urls').addEventListener('input', function(e) {
-            updateUrlCount(e.target.value);
+            document.getElementById('bulk-urls').addEventListener('input', function(e) {
+                updateUrlCount(e.target.value);
+            });
         });
 
         function validateSingleUrl(url) {
@@ -821,6 +820,7 @@
                     </div>
                     <div class="error-message">
                         This URL doesn't appear to be a valid YouTube video or playlist link.
+                        <br><strong>URL:</strong> ${analysis.url}
                     </div>
                 `;
                 resultsContent.appendChild(videoDiv);
@@ -832,4 +832,322 @@
                     <span class="video-type-badge">${analysis.type === 'playlist' ? '📋 Playlist' : '🎬 Video'}</span>
                     <span class="video-title">${analysis.type === 'playlist' ? 'YouTube Playlist' : 'YouTube Video'}</span>
                 </div>
-                <div class="video-details
+                <div class="video-details">
+                    ${analysis.videoId ? `<div class="video-id">Video ID: ${analysis.videoId}</div>` : ''}
+                    ${analysis.playlistId ? `<div class="video-id">Playlist ID: ${analysis.playlistId}</div>` : ''}
+                    <p><strong>Original URL:</strong> ${analysis.url}</p>
+                    <p><strong>Analysis Time:</strong> ${analysis.timestamp}</p>
+                </div>
+
+                ${analysis.thumbnail ? `
+                    <div class="thumbnail-container">
+                        <img src="${analysis.thumbnail}" alt="Video Thumbnail" class="thumbnail" 
+                             onerror="this.style.display='none'">
+                    </div>
+                ` : ''}
+
+                <div class="command-section">
+                    <div class="command-header">
+                        <span class="command-label">🚀 yt-dlp Command</span>
+                        <button class="copy-btn" onclick="copyToClipboard('${analysis.ytDlpCommand.replace(/'/g, "\\'")}')">📋 Copy</button>
+                    </div>
+                    <div class="command-code">${analysis.ytDlpCommand}</div>
+                </div>
+
+                <div class="external-links">
+                    <h3>🔗 Quick Actions</h3>
+                    <div class="link-grid">
+                        <a href="${analysis.watchUrl}" target="_blank">🎬 Watch on YouTube</a>
+                        ${analysis.embedUrl ? `<a href="${analysis.embedUrl}" target="_blank">📺 Embed View</a>` : ''}
+                        <a href="#" onclick="copyToClipboard('${analysis.url}'); return false;">📋 Copy URL</a>
+                        <a href="#" onclick="copyToClipboard('${analysis.ytDlpCommand.replace(/'/g, "\\'")}'); return false;">⚡ Copy Command</a>
+                    </div>
+                </div>
+            `;
+
+            videoDiv.innerHTML = content;
+            resultsContent.appendChild(videoDiv);
+        }
+
+        function updateStats() {
+            document.getElementById('total-analyzed').textContent = stats.totalAnalyzed;
+            document.getElementById('valid-videos').textContent = stats.validVideos;
+            document.getElementById('playlists-found').textContent = stats.playlistsFound;
+        }
+
+        function showProgress(current, total) {
+            const progressSection = document.getElementById('progress-section');
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            
+            progressSection.style.display = 'block';
+            const percentage = (current / total) * 100;
+            progressFill.style.width = percentage + '%';
+            progressText.textContent = `${Math.round(percentage)}% complete (${current}/${total})`;
+        }
+
+        function hideProgress() {
+            const progressSection = document.getElementById('progress-section');
+            progressSection.style.display = 'none';
+        }
+
+        function analyzeSingle() {
+            const url = document.getElementById('single-url').value.trim();
+            if (!url) {
+                alert('Please enter a YouTube URL to analyze.');
+                return;
+            }
+
+            const analysis = analyzeUrl(url);
+            analysisResults = [analysis];
+            
+            // Update stats
+            stats.totalAnalyzed = 1;
+            stats.validVideos = analysis.isValid ? 1 : 0;
+            stats.playlistsFound = analysis.type === 'playlist' ? 1 : 0;
+            updateStats();
+
+            // Clear previous results and display new one
+            const resultsContent = document.getElementById('results-content');
+            resultsContent.innerHTML = '';
+            displayResult(analysis, 0);
+            
+            // Show results
+            document.getElementById('results').style.display = 'block';
+        }
+
+        async function analyzeBulk() {
+            const bulkText = document.getElementById('bulk-urls').value.trim();
+            if (!bulkText) {
+                alert('Please enter URLs to analyze.');
+                return;
+            }
+
+            const urls = bulkText.split('\n').filter(url => url.trim().length > 0);
+            if (urls.length === 0) {
+                alert('No valid URLs found in the input.');
+                return;
+            }
+
+            // Reset stats
+            stats.totalAnalyzed = 0;
+            stats.validVideos = 0;
+            stats.playlistsFound = 0;
+            analysisResults = [];
+
+            // Clear previous results
+            const resultsContent = document.getElementById('results-content');
+            resultsContent.innerHTML = '';
+            document.getElementById('results').style.display = 'block';
+
+            // Process URLs with progress indication
+            for (let i = 0; i < urls.length; i++) {
+                showProgress(i, urls.length);
+                
+                const analysis = analyzeUrl(urls[i]);
+                analysisResults.push(analysis);
+                
+                // Update stats
+                stats.totalAnalyzed++;
+                if (analysis.isValid) {
+                    stats.validVideos++;
+                    if (analysis.type === 'playlist') {
+                        stats.playlistsFound++;
+                    }
+                }
+                
+                updateStats();
+                displayResult(analysis, i);
+                
+                // Small delay for visual effect
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+            
+            showProgress(urls.length, urls.length);
+            setTimeout(() => hideProgress(), 1000);
+        }
+
+        async function pasteSingle() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('single-url').value = text;
+                validateSingleUrl(text);
+            } catch (err) {
+                alert('Unable to access clipboard. Please paste manually.');
+            }
+        }
+
+        async function pasteBulk() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('bulk-urls').value = text;
+                updateUrlCount(text);
+            } catch (err) {
+                alert('Unable to access clipboard. Please paste manually.');
+            }
+        }
+
+        function copyAllCommands() {
+            const validResults = analysisResults.filter(result => result.isValid);
+            if (validResults.length === 0) {
+                alert('No valid URLs to copy commands for.');
+                return;
+            }
+
+            const commands = validResults.map(result => result.ytDlpCommand).join('\n\n');
+            copyToClipboard(commands);
+        }
+
+        function exportResults() {
+            if (analysisResults.length === 0) {
+                alert('No results to export. Please analyze some URLs first.');
+                return;
+            }
+
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                stats: stats,
+                results: analysisResults.map(result => ({
+                    url: result.url,
+                    videoId: result.videoId,
+                    playlistId: result.playlistId,
+                    type: result.type,
+                    isValid: result.isValid,
+                    ytDlpCommand: result.ytDlpCommand,
+                    watchUrl: result.watchUrl,
+                    embedUrl: result.embedUrl
+                }))
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `youtube_analysis_${new Date().getTime()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showNotification('Results exported successfully!');
+        }
+
+        function clearAll() {
+            if (confirm('Are you sure you want to clear all results and inputs?')) {
+                document.getElementById('single-url').value = '';
+                document.getElementById('bulk-urls').value = '';
+                document.getElementById('results-content').innerHTML = '';
+                document.getElementById('results').style.display = 'none';
+                document.getElementById('single-validator').className = 'url-validator validator-empty';
+                document.getElementById('single-validator').textContent = 'Enter a YouTube URL to validate';
+                document.getElementById('url-count').textContent = '0 URLs entered';
+                
+                // Reset stats
+                stats.totalAnalyzed = 0;
+                stats.validVideos = 0;
+                stats.playlistsFound = 0;
+                analysisResults = [];
+                updateStats();
+                
+                showNotification('All data cleared!');
+            }
+        }
+
+        function generateYtDlpCommand(url, options = {}) {
+            const quality = document.getElementById('video-quality').value;
+            const outputPath = document.getElementById('output-path').value || 'downloads';
+            const addMetadata = document.getElementById('add-metadata').checked;
+            const addSubtitles = document.getElementById('add-subtitles').checked;
+            const addThumbnail = document.getElementById('add-thumbnail').checked;
+            const reversePlaylist = document.getElementById('playlist-reverse').checked;
+
+            let command = 'yt-dlp';
+            
+            // Quality format
+            if (quality !== "best") {
+                command += ` -f "${quality}"`;
+            }
+            
+            // Output template
+            command += ` -o "${outputPath}/%(uploader)s - %(title).80s [%(id)s].%(ext)s"`;
+            
+            // Additional options
+            if (addMetadata) command += ' --add-metadata';
+            if (addSubtitles) command += ' --write-subs --write-auto-subs';
+            if (addThumbnail) command += ' --embed-thumbnail';
+            if (reversePlaylist && extractPlaylistId(url)) command += ' --playlist-reverse';
+            
+            command += ` "${url}"`;
+            
+            return command;
+        }
+
+        function analyzeUrl(url) {
+            const videoId = extractVideoId(url);
+            const playlistId = extractPlaylistId(url);
+            
+            const analysis = {
+                url: url,
+                videoId: videoId,
+                playlistId: playlistId,
+                isValid: !!(videoId || playlistId),
+                type: playlistId ? 'playlist' : 'video',
+                thumbnail: videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null,
+                watchUrl: videoId ? `https://www.youtube.com/watch?v=${videoId}` : url,
+                embedUrl: videoId ? `https://www.youtube.com/embed/${videoId}` : null,
+                ytDlpCommand: null,
+                timestamp: new Date().toLocaleString()
+            };
+
+            if (analysis.isValid) {
+                analysis.ytDlpCommand = generateYtDlpCommand(url);
+            }
+
+            return analysis;
+        }
+
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showNotification('Copied to clipboard!');
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    showNotification('Copied to clipboard!');
+                } catch (err) {
+                    alert('Unable to copy to clipboard. Please copy manually.');
+                }
+                
+                document.body.removeChild(textArea);
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('copy-notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Utility function to escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
