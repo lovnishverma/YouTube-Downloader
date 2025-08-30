@@ -599,7 +599,7 @@
         </div>
 
         <div class="limitation-notice">
-            <strong>⚠️ Static Site Limitation:</strong> This tool analyzes URLs and generates download commands. Use external tools or command line for actual downloading.
+            <strong>⚠️ No ffmpeg? No problem!</strong> This tool now defaults to formats that work without ffmpeg. Select "720p MP4" or "360p MP4" for single files with audio included.
         </div>
 
         <div class="advanced-options">
@@ -608,15 +608,16 @@
                 <div class="input-group">
                     <label for="video-quality">Video Quality:</label>
                     <select id="video-quality">
-                        <option value="best">🏆 Best Quality Available</option>
-                        <option value="bestvideo[height<=2160]+bestaudio/best">📺 4K (2160p)</option>
-                        <option value="bestvideo[height<=1440]+bestaudio/best">🎬 2K (1440p)</option>
-                        <option value="bestvideo[height<=1080]+bestaudio/best">🎯 Full HD (1080p)</option>
-                        <option value="bestvideo[height<=720]+bestaudio/best">📱 HD (720p)</option>
-                        <option value="bestvideo[height<=480]+bestaudio/best">📺 SD (480p)</option>
-                        <option value="bestaudio[ext=mp3]/best">🎵 Audio Only (MP3)</option>
-                        <option value="bestaudio/best">🎶 Audio Only (Best)</option>
-                        <option value="worst">⚡ Fastest Download</option>
+                        <option value="22">🎯 720p MP4 (RECOMMENDED - no ffmpeg needed)</option>
+                        <option value="18">📱 360p MP4 (no ffmpeg needed)</option>
+                        <option value="133+140/22">📺 720p MP4 (fallback to format 22)</option>
+                        <option value="134+140/18">📱 360p MP4 (fallback to format 18)</option>
+                        <option value="mp4">📺 Best MP4 (no ffmpeg needed)</option>
+                        <option value="webm">🌐 Best WebM (no ffmpeg needed)</option>
+                        <option value="worst[ext=mp4]">⚡ Fastest MP4 (no ffmpeg needed)</option>
+                        <option value="bestaudio[ext=mp3]/bestaudio[ext=m4a]/bestaudio">🎵 Audio Only</option>
+                        <option value="best[height<=720][ext=mp4]/best[ext=mp4]/best">🔄 Smart HD (auto-fallback)</option>
+                        <option value="best">🏆 Best Available (may need ffmpeg)</option>
                     </select>
                 </div>
                 <div class="input-group">
