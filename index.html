@@ -288,9 +288,18 @@
         }
 
         function generateYtDlpCommand(url, outputPath = 'downloads') {
-            const quality = document.getElementById('video-quality').value;
-            return `yt-dlp -f "${quality}" -o "${outputPath}/%(title).80s.%(ext)s" "${url}"`;
-        }
+    const quality = document.getElementById('video-quality').value;
+
+    if (quality === "best") {
+        // Let yt-dlp auto-pick best
+        return `yt-dlp -o "${outputPath}/%(title).80s.%(ext)s" "${url}"`;
+    }
+    if (quality === "worst") {
+        return `yt-dlp -f "worst" -o "${outputPath}/%(title).80s.%(ext)s" "${url}"`;
+    }
+    return `yt-dlp -f "${quality}" -o "${outputPath}/%(title).80s.%(ext)s" "${url}"`;
+}
+
 
         function analyzeUrl(url) {
             const videoId = extractVideoId(url);
@@ -330,13 +339,22 @@
             if (analysis.playlistId) {
                 content += `<p><strong>Playlist ID:</strong> <span class="video-id">${analysis.playlistId}</span></p>`;
             }
+            function copyCommand(button) {
+    const command = button.getAttribute("data-command");
+    copyToClipboard(command);
+}
 
-            content += `
-                <p><strong>yt-dlp Command:</strong></p>
-                <div style="background: #f1f3f4; padding: 10px; border-radius: 5px; margin: 10px 0; font-family: monospace; word-break: break-all;">
-                    <code>${analysis.ytDlpCommand}</code>
-                    <button class="btn copy-btn" style="margin-left: 10px; font-size: 12px; padding: 5px 10px;" onclick="copyToClipboard('${analysis.ytDlpCommand.replace(/'/g, "\\'")}')">📋 Copy</button>
-                </div>
+
+           content += `
+    <p><strong>yt-dlp Command:</strong></p>
+    <div style="background: #f1f3f4; padding: 10px; border-radius: 5px; margin: 10px 0; font-family: monospace; word-break: break-all;">
+        <code>${analysis.ytDlpCommand}</code>
+        <button class="btn copy-btn" 
+            data-command="${analysis.ytDlpCommand}" 
+            onclick="copyCommand(this)">📋 Copy</button>
+    </div>
+`;
+
                 
                 <div class="external-links">
                     <h3>🔗 External Download Options:</h3>
