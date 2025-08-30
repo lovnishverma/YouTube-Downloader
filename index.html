@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube URL Analyzer - GitHub Pages Compatible</title>
-     <link
+    <link
       rel="shortcut icon"
       type="image/x-icon"
       href="https://cdn.glitch.global/12392ae7-4a85-40e3-8823-99588eabfbd2/Logo%20(512%20x%20512%20px).png?v=1709289476595"
@@ -66,7 +66,7 @@
             color: #333;
         }
 
-        input[type="url"], textarea {
+        input[type="url"], textarea, select {
             width: 100%;
             padding: 15px;
             border: 2px solid #e9ecef;
@@ -76,7 +76,7 @@
             background: #f8f9fa;
         }
 
-        input[type="url"]:focus, textarea:focus {
+        input[type="url"]:focus, textarea:focus, select:focus {
             outline: none;
             border-color: #ff6b6b;
             background: white;
@@ -188,23 +188,6 @@
             margin-bottom: 20px;
         }
 
-        select {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 16px;
-            background: #f8f9fa;
-            transition: all 0.3s ease;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #ff6b6b;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
-        }
-
         .copied-notification {
             position: fixed;
             top: 20px;
@@ -223,6 +206,13 @@
         .copied-notification.show {
             opacity: 1;
             transform: translateX(0);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9em;
         }
     </style>
 </head>
@@ -271,10 +261,11 @@
             <div id="results-content"></div>
         </div>
 
-        <!-- Copy notification -->
         <div id="copy-notification" class="copied-notification">
             ✅ Copied to clipboard!
         </div>
+        
+        <p class="copyright">&copy; 2025 Lovnish Verma. All rights reserved.</p>
     </div>
 
     <script>
@@ -314,53 +305,63 @@
             };
         }
 
-        function displayResult(analysis) {
+        /**
+         * FIXED: This function now uses addEventListener to avoid bugs with quotes in the command string.
+         * It accepts an 'index' to create a unique ID for each copy button.
+         */
+        function displayResult(analysis, index) {
             const resultsContent = document.getElementById('results-content');
             
             const videoDiv = document.createElement('div');
             videoDiv.className = 'video-info';
             
-            let content = `
-                <h4>${analysis.type === 'playlist' ? '📋 Playlist' : '🎬 Video'}</h4>
-                <p><strong>URL:</strong> <a href="${analysis.url}" target="_blank">${analysis.url}</a></p>
-            `;
+            let content;
 
-            if (analysis.videoId) {
-                content += `
-                    <p><strong>Video ID:</strong> <span class="video-id">${analysis.videoId}</span></p>
-                    <p><strong>Thumbnail:</strong> <img src="${analysis.thumbnail}" alt="Thumbnail" style="max-width: 200px; border-radius: 5px; margin: 10px 0;"></p>
-                `;
-            }
-
-            if (analysis.playlistId) {
-                content += `<p><strong>Playlist ID:</strong> <span class="video-id">${analysis.playlistId}</span></p>`;
-            }
-
-            content += `
-                <p><strong>yt-dlp Command:</strong></p>
-                <div style="background: #f1f3f4; padding: 10px; border-radius: 5px; margin: 10px 0; font-family: monospace; word-break: break-all;">
-                    <code>${analysis.ytDlpCommand}</code>
-                    <button class="btn copy-btn" style="margin-left: 10px; font-size: 12px; padding: 5px 10px;" onclick="copyToClipboard('${analysis.ytDlpCommand.replace(/'/g, "\\'")}')">📋 Copy and Paste in CMD to Download Video</button>
-                </div>
+            if (analysis.isValid) {
+                let header = `<h4>${analysis.type === 'playlist' ? '📋 Playlist' : '🎬 Video'}</h4>`;
+                let urlInfo = `<p><strong>URL:</strong> <a href="${analysis.url}" target="_blank">${analysis.url}</a></p>`;
+                let videoIdInfo = analysis.videoId ? `<p><strong>Video ID:</strong> <span class="video-id">${analysis.videoId}</span></p>` : '';
+                let thumbnailInfo = analysis.videoId ? `<p><strong>Thumbnail:</strong> <img src="${analysis.thumbnail}" alt="Thumbnail" style="max-width: 200px; border-radius: 5px; margin: 10px 0;"></p>` : '';
+                let playlistIdInfo = analysis.playlistId ? `<p><strong>Playlist ID:</strong> <span class="video-id">${analysis.playlistId}</span></p>` : '';
                 
-                <div class="external-links">
-                    <h3>🔗 External Download Options:</h3>
-                    <a href="https://ytdl-org.github.io/youtube-dl/" target="_blank">youtube-dl Official</a>
-                    <a href="https://github.com/yt-dlp/yt-dlp" target="_blank">yt-dlp (Recommended)</a>
-                    <a href="https://www.4kdownload.com/" target="_blank">4K Video Downloader</a>
-                    <a href="https://clipgrab.org/" target="_blank">ClipGrab</a>
-                </div>
-            `;
+                let commandInfo = `
+                    <p><strong>yt-dlp Command:</strong></p>
+                    <div style="background: #f1f3f4; padding: 10px; border-radius: 5px; margin: 10px 0; font-family: monospace; word-break: break-all;">
+                        <code>${analysis.ytDlpCommand}</code>
+                        <button id="copy-btn-${index}" class="btn copy-btn" style="margin-left: 10px; font-size: 12px; padding: 5px 10px;">📋 Copy Command</button>
+                    </div>
+                `;
+                
+                let externalLinks = `
+                    <div class="external-links">
+                        <h3>🔗 External Download Options:</h3>
+                        <a href="https://ytdl-org.github.io/youtube-dl/" target="_blank">youtube-dl Official</a>
+                        <a href="https://github.com/yt-dlp/yt-dlp" target="_blank">yt-dlp (Recommended)</a>
+                        <a href="https://www.4kdownload.com/" target="_blank">4K Video Downloader</a>
+                        <a href="https://clipgrab.org/" target="_blank">ClipGrab</a>
+                    </div>
+                `;
 
-            if (!analysis.isValid) {
+                content = header + urlInfo + videoIdInfo + playlistIdInfo + thumbnailInfo + commandInfo + externalLinks;
+            } else {
                 content = `
                     <h4 style="color: #dc3545;">❌ Invalid URL</h4>
-                    <p>This doesn't appear to be a valid YouTube URL.</p>
+                    <p>Could not find a valid Video or Playlist ID in: <code>${analysis.url}</code></p>
                 `;
             }
 
             videoDiv.innerHTML = content;
             resultsContent.appendChild(videoDiv);
+
+            // Safely attach the event listener using JavaScript after the element is in the DOM
+            if (analysis.isValid) {
+                const copyButton = document.getElementById(`copy-btn-${index}`);
+                if (copyButton) {
+                    copyButton.addEventListener('click', () => {
+                        copyToClipboard(analysis.ytDlpCommand);
+                    });
+                }
+            }
         }
 
         function analyzeSingle() {
@@ -378,7 +379,7 @@
 
             const analysis = analyzeUrl(url);
             analysisResults.push(analysis);
-            displayResult(analysis);
+            displayResult(analysis, 0); // FIXED: Pass index 0
             
             results.style.display = 'block';
         }
@@ -405,7 +406,6 @@
             resultsContent.innerHTML = '';
             analysisResults = [];
 
-            // Add summary
             const summaryDiv = document.createElement('div');
             summaryDiv.innerHTML = `
                 <div style="background: #d1ecf1; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid #17a2b8;">
@@ -420,16 +420,15 @@
                 setTimeout(() => {
                     const analysis = analyzeUrl(url);
                     analysisResults.push(analysis);
-                    displayResult(analysis);
+                    displayResult(analysis, index); // FIXED: Pass the current loop index
                     
-                    // Update status
                     const statusSpan = document.getElementById('processing-status');
                     statusSpan.textContent = `Processed ${index + 1}/${urls.length}`;
                     
                     if (index === urls.length - 1) {
                         statusSpan.textContent = '✅ Complete!';
                     }
-                }, index * 200); // Stagger the analysis for visual effect
+                }, index * 100);
             });
 
             results.style.display = 'block';
@@ -445,6 +444,11 @@
                 .filter(result => result.isValid)
                 .map(result => result.ytDlpCommand)
                 .join('\n');
+
+            if (!commands) {
+                alert('No valid commands available to copy.');
+                return;
+            }
 
             copyToClipboard(commands);
             alert(`Copied ${analysisResults.filter(r => r.isValid).length} yt-dlp commands to clipboard!`);
@@ -482,7 +486,6 @@
                 }
             } catch (err) {
                 console.error('Fallback copy failed: ', err);
-                // Show manual copy dialog
                 prompt('Copy this command manually (Ctrl+C):', text);
             } finally {
                 document.body.removeChild(textArea);
@@ -498,16 +501,15 @@
             }, 2000);
         }
 
-        // Demo functionality
         function loadDemo() {
             document.getElementById('bulk-urls').value = `https://www.youtube.com/watch?v=dQw4w9WgXcQ
 https://www.youtube.com/watch?v=9bZkp7q19f0
 https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMt3JQTaaWDvykpOBz
-https://youtu.be/oHg5SJYRHA0`;
+https://youtu.be/oHg5SJYRHA0
+invalid-url-example`;
             analyzeBulk();
         }
 
-        // Add demo button
         window.addEventListener('DOMContentLoaded', () => {
             const inputSection = document.querySelector('.input-section');
             const demoBtn = document.createElement('button');
@@ -515,10 +517,10 @@ https://youtu.be/oHg5SJYRHA0`;
             demoBtn.innerHTML = '🎬 Load Demo URLs';
             demoBtn.onclick = loadDemo;
             demoBtn.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
-            inputSection.appendChild(demoBtn);
+            // Insert demo button after the bulk input group
+            document.querySelector('#bulk-urls').parentElement.appendChild(demoBtn);
         });
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && e.key === 'Enter') {
                 e.preventDefault();
